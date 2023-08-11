@@ -53,9 +53,7 @@ class RenderLoadedStatement extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w500),
 
-                // DateFormat.yMMMd().format('2074-23-2'),
               ))
-          // trailing: const Icon(Icons.notes)),
           ),
     );
   }

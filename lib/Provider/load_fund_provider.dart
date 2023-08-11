@@ -15,20 +15,14 @@ class LoadedFund {
 }
 
 class LoadedFundProvider with ChangeNotifier {
-  final List<LoadedFund> _statement = [
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-    LoadedFund(id: 'dfdf', uid: 'suman', amount: 100, dateTime: DateTime.now()),
-  ];
+  final List<LoadedFund> _statement = [];
 
   List<LoadedFund> get getloadedStatement {
     return [..._statement];
+  }
+
+  void addFund(LoadedFund fund) {
+    _statement.insert(0, fund);
+    notifyListeners();
   }
 }

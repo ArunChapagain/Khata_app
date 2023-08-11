@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khata_app/Provider/expenceprovider.dart';
 import 'package:khata_app/Provider/load_fund_provider.dart';
 import 'package:khata_app/Screen/add_expense_screen.dart';
 import 'package:khata_app/Screen/expense_screen.dart';
@@ -60,6 +61,10 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  ThemeData lightTheme = ThemeData(
+    colorSchemeSeed: const Color(0xff6750a4),
+  );
+
   bool get useLightMode {
     switch (themeMode) {
       case ThemeMode.system:
@@ -82,16 +87,29 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (ctx) => LoadedFundProvider())
+        ChangeNotifierProvider(
+          create: (ctx) => LoadedFundProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => ExpenseProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Khata',
         themeMode: themeMode,
-        theme: ThemeData(
-            colorSchemeSeed: const Color(0xff6750a4),
-            useMaterial3: true,
-            brightness: Brightness.light),
+
+        // theme: ThemeData(
+        //     colorSchemeSeed: const Color(0xff6750a4),
+        //     useMaterial3: true,
+        //     brightness: Brightness.light),
+
+        theme: lightTheme.copyWith(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          // scaffoldBackgroundColor: lightTheme.secondaryHeaderColor,
+        ),
+
         darkTheme: ThemeData(
             colorSchemeSeed: const Color(0xff6750a4),
             useMaterial3: true,
@@ -157,7 +175,7 @@ class _MyAppState extends State<MyApp> {
         ),
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),
-          LoadFundScreen.routeName: (ctx) => const LoadFundScreen(),
+          LoadFundScreen.routeName: (ctx) => LoadFundScreen(),
           AddExpenseScreen.routeName: (ctx) => const AddExpenseScreen(),
         },
 

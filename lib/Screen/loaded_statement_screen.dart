@@ -41,12 +41,29 @@ class _LoadedStatementScreenState extends State<LoadedStatementScreen> {
                 ),
                 child: Container(
                   height: 490,
-                  child: ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      return const RenderLoadedStatement();
-                    },
-                    itemCount: data.length,
-                  ),
+                  child: (data.isEmpty)
+                      ? Center(
+                          child: Card(
+                              margin: const EdgeInsets.all(7),
+                              elevation: 0,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceVariant
+                                  .withOpacity(0.3),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(
+                                  'No Fund loaded yet',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                              )))
+                      : ListView.builder(
+                          itemBuilder: (ctx, index) {
+                            return const RenderLoadedStatement();
+                          },
+                          itemCount: data.length,
+                        ),
                 ),
               ),
             ),

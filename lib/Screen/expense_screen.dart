@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:khata_app/Provider/load_fund_provider.dart';
+import 'package:khata_app/Provider/expenceprovider.dart';
 import 'package:khata_app/widget/balance_viewer.dart';
 import 'package:khata_app/widget/render_expense_statement%20.dart';
-import 'package:khata_app/widget/render_loaded_statement.dart';
 import 'package:provider/provider.dart';
 
 class ExpenseStatementScreen extends StatefulWidget {
@@ -15,8 +14,8 @@ class ExpenseStatementScreen extends StatefulWidget {
 class _ExpenseStatementScreenState extends State<ExpenseStatementScreen> {
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<LoadedFundProvider>(context, listen: false)
-        .getloadedStatement;
+    final data =
+        Provider.of<ExpenseProvider>(context, listen: false).expenseStatement;
     return Scaffold(
       body: Column(
         children: [
@@ -26,11 +25,15 @@ class _ExpenseStatementScreenState extends State<ExpenseStatementScreen> {
           ),
           Container(
             height: 540,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                return const RenderExpenseStatement();
-              },
-              itemCount: data.length,
+            child: Consumer<ExpenseProvider>(
+              builder: (context, value, child) => ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return RenderExpenseStatement(
+                    stm: value.expenseStatement[index],
+                  );
+                },
+                itemCount: data.length,
+              ),
             ),
           ),
         ],
