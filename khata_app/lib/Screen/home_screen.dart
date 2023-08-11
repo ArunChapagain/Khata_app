@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:khata_app/Screen/add_expense_screen.dart';
+import 'package:khata_app/Screen/load_fund_screen.dart';
+import 'package:khata_app/widget/balance_viewer.dart';
 import 'package:khata_app/widget/bar_graph.dart';
-import 'package:khata_app/widget/reload.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeName = 'home';
   const HomeScreen({super.key});
+  // final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -12,30 +16,13 @@ class HomeScreen extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         child: Column(
           children: [
-            Card(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              margin: const EdgeInsets.all(10),
-              elevation: 3,
-              child: ListTile(
-                  leading: const Icon(
-                    Icons.account_balance_wallet,
-                    size: 30,
-                  ),
-                  title: Text(
-                    'NPR ${100}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  subtitle: const Text('Balance'),
-                  trailing: ReloadListTile(
-                    onPressed: () => false,
-                  )),
-            ),
-            Container(
+            const BalanceViewer(),
+            SizedBox(
               height: 545,
               child: ListView(
                 children: [
                   Card(
-                    margin: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.all(7),
                     elevation: 0,
                     color: Theme.of(context)
                         .colorScheme
@@ -43,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                         .withOpacity(0.3),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 10),
+                          vertical: 10.0, horizontal: 7),
                       child: Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -61,7 +48,10 @@ class HomeScreen extends StatelessWidget {
                                 Column(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed(
+                                            LoadFundScreen.routeName);
+                                      },
                                       icon: Icon(
                                         Icons.archive,
                                         size: 40,
@@ -71,13 +61,16 @@ class HomeScreen extends StatelessWidget {
                                             .withOpacity(.9),
                                       ),
                                     ),
-                                    const Text('Add Money')
+                                    const Text('Load Fund')
                                   ],
                                 ),
                                 Column(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed(
+                                            AddExpenseScreen.routeName);
+                                      },
                                       icon: Icon(
                                         Icons.calendar_month,
                                         size: 40,

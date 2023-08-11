@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:khata_app/Provider/load_fund_provider.dart';
+import 'package:khata_app/Screen/add_expense_screen.dart';
 import 'package:khata_app/Screen/expense_screen.dart';
 import 'package:khata_app/Screen/home_screen.dart';
-import 'package:khata_app/Screen/loaded_screen.dart';
+import 'package:khata_app/Screen/load_fund_screen.dart';
+import 'package:khata_app/Screen/loaded_statement_screen.dart';
 import 'package:khata_app/widget/theme_mode.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,9 +24,40 @@ class _MyAppState extends State<MyApp> {
   int index = 0;
   List screen = [];
   @override
-  void initState() {
-    screen = [const HomeScreen(), const LoadedScreen(), const ExpenseScreen()];
-    super.initState();
+  void didChangeDependencies() {
+    screen = [
+      const HomeScreen(),
+      const LoadedStatementScreen(),
+      const ExpenseStatementScreen()
+    ];
+    super.didChangeDependencies();
+  }
+
+  void handelingBottomBox() async {
+    await showModalBottomSheet(
+      showDragHandle: true,
+      context: context,
+      constraints: const BoxConstraints(maxWidth: 640),
+      builder: (context) {
+        return SizedBox(
+          height: 150,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: const [
+                Icon(Icons.access_time_outlined),
+                Icon(Icons.access_time_outlined),
+                Icon(Icons.access_time_outlined),
+                Icon(Icons.access_time_outlined),
+                Icon(Icons.access_time_outlined),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   bool get useLightMode {
@@ -45,145 +80,91 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-  MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    return MaterialApp(
-
-
-      
-      debugShowCheckedModeBanner: false,
-      title: 'Khata',
-      themeMode: themeMode,
-      theme: ThemeData(
-          colorSchemeSeed: const Color(0xff6750a4),
-          useMaterial3: true,
-          brightness: Brightness.light),
-      darkTheme: ThemeData(
-          colorSchemeSeed: const Color(0xff6750a4),
-          useMaterial3: true,
-          brightness: Brightness.dark),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Khata App'),
-          actions: [
-            BrightnessButton(handleBrightnessChange: handleBrightnessChange),
-
-Localizations(
-  locale: localizations.locale,
-  delegates: [localizations],
-  child: IconButton(
-    onPressed: () {
-      showModalBottomSheet(
-        showDragHandle: true,
-        context: context,
-        constraints: const BoxConstraints(maxWidth: 640),
-        builder: (context) {
-          return SizedBox(
-            height: 150,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  Icon(Icons.access_time_outlined),
-                  Icon(Icons.access_time_outlined),
-                  Icon(Icons.access_time_outlined),
-                  Icon(Icons.access_time_outlined),
-                  Icon(Icons.access_time_outlined),
-                ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => LoadedFundProvider())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Khata',
+        themeMode: themeMode,
+        theme: ThemeData(
+            colorSchemeSeed: const Color(0xff6750a4),
+            useMaterial3: true,
+            brightness: Brightness.light),
+        darkTheme: ThemeData(
+            colorSchemeSeed: const Color(0xff6750a4),
+            useMaterial3: true,
+            brightness: Brightness.dark),
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Khata App'),
+            actions: [
+              BrightnessButton(handleBrightnessChange: handleBrightnessChange),
+              IconButton(
+                onPressed: () {
+                  handelingBottomBox();
+                },
+                icon: const Icon(Icons.more_vert),
+              )
+            ],
+          ),
+          body: screen[index],
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: index,
+            onDestinationSelected: (index) {
+              setState(() {
+                this.index = index;
+              });
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(
+                  Icons.home_outlined,
+                  size: 30,
+                ),
+                label: 'Home',
+                selectedIcon: Icon(
+                  Icons.home,
+                  size: 35,
+                ),
               ),
-            ),
-          );
+              NavigationDestination(
+                icon: Icon(
+                  Icons.receipt_long_outlined,
+                  size: 30,
+                ),
+                label: 'Loaded',
+                selectedIcon: Icon(
+                  Icons.receipt_long,
+                  size: 35,
+                ),
+              ),
+              NavigationDestination(
+                icon: Icon(
+                  Icons.calendar_month_outlined,
+                  size: 30,
+                ),
+                label: 'Expense',
+                selectedIcon: Icon(
+                  Icons.calendar_month_sharp,
+                  size: 35,
+                ),
+              ),
+            ],
+            // selectedIndex:get,
+          ),
+        ),
+        routes: {
+          HomeScreen.routeName: (ctx) => const HomeScreen(),
+          LoadFundScreen.routeName: (ctx) => const LoadFundScreen(),
+          AddExpenseScreen.routeName: (ctx) => const AddExpenseScreen(),
         },
-      );
-    },
-    icon: const Icon(Icons.more_vert),
-  ),)
 
-
-
-
-            // IconButton(
-            //   onPressed: () {
-            //     showModalBottomSheet(
-            //       showDragHandle: true,
-            //       context: context,
-            //       constraints: const BoxConstraints(maxWidth: 640),
-            //       builder: (context) {
-            //         return SizedBox(
-            //           height: 150,
-            //           child: Padding(
-            //             padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            //             child: ListView(
-            //               shrinkWrap: true,
-            //               scrollDirection: Axis.horizontal,
-            //               children: const [
-            //                 Icon(Icons.access_time_outlined),
-            //                 Icon(Icons.access_time_outlined),
-            //                 Icon(Icons.access_time_outlined),
-            //                 Icon(Icons.access_time_outlined),
-            //                 Icon(Icons.access_time_outlined),
-            //               ],
-            //             ),
-            //           ),
-            //         );
-            //       },
-            //     );
-            //   },
-            //   icon: const Icon(Icons.more_vert),
-            // )
-          ],
-        ),
-        body: screen[index],
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: index,
-          onDestinationSelected: (index) {
-            setState(() {
-              this.index = index;
-            });
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(
-                Icons.home_outlined,
-                size: 30,
-              ),
-              label: 'Home',
-              selectedIcon: Icon(
-                Icons.home,
-                size: 35,
-              ),
-            ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.receipt_long_outlined,
-                size: 30,
-              ),
-              label: 'Loaded',
-              selectedIcon: Icon(
-                Icons.receipt_long,
-                size: 35,
-              ),
-            ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.calendar_month_outlined,
-                size: 30,
-              ),
-              label: 'Expense',
-              selectedIcon: Icon(
-                Icons.calendar_month_sharp,
-                size: 35,
-              ),
-            ),
-          ],
-          // selectedIndex:get,
-        ),
+        //  HomeScreen(
+        //   handleBrightnessChange: handleBrightnessChange,
+        // ),
       ),
-
-      //  HomeScreen(
-      //   handleBrightnessChange: handleBrightnessChange,
-      // ),
     );
   }
 }
