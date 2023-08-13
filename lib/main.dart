@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           HomeScreen.routeName: (ctx) => const HomeScreen(),
           LoadFundScreen.routeName: (ctx) => LoadFundScreen(),
-          AddExpenseScreen.routeName: (ctx) => const AddExpenseScreen(),
+          AddExpenseScreen.routeName: (ctx) =>  AddExpenseScreen(),
         },
 
         //  HomeScreen(

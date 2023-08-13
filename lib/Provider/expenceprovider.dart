@@ -17,28 +17,14 @@ class Expense {
 }
 
 class ExpenseProvider with ChangeNotifier {
-  final List<Expense> _statement = [
-    Expense(
-        id: 'dfdf',
-        uid: 'suman',
-        description: '1 kg mushroom',
-        amount: 100,
-        dateTime: DateTime.now()),
-    Expense(
-        id: 'dfdf',
-        uid: 'suman',
-        description: '1 kg mushroom',
-        amount: 100,
-        dateTime: DateTime.now()),
-    Expense(
-        id: 'dfdf',
-        uid: 'suman',
-        description: '1 kg mushroom',
-        amount: 100,
-        dateTime: DateTime.now()),
-  ];
+  final List<Expense> _statement = [];
 
   List<Expense> get expenseStatement {
     return [..._statement];
+  }
+
+  void addExpence(Expense expense) {
+    _statement.insert(0, expense);
+    notifyListeners();
   }
 }

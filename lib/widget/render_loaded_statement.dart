@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:khata_app/Provider/load_fund_provider.dart';
 
 class RenderLoadedStatement extends StatelessWidget {
-  const RenderLoadedStatement({super.key});
+ const RenderLoadedStatement({required this.fund, super.key});
+final  LoadedFund fund;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +35,9 @@ class RenderLoadedStatement extends StatelessWidget {
                           const SizedBox(
                             width: 5,
                           ),
-                          const Text(
-                            '200',
-                            style: TextStyle(fontSize: 20),
+                          Text(
+                            fund.amount.toString(),
+                            style:const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
@@ -46,15 +48,13 @@ class RenderLoadedStatement extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               subtitle: Text(
-                '2074/3/4',
+                DateFormat.MMMMEEEEd().format(fund.dateTime),
                 style: TextStyle(
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(.6),
                     fontSize: 18,
                     fontWeight: FontWeight.w500),
-
-              ))
-          ),
+              ))),
     );
   }
 }

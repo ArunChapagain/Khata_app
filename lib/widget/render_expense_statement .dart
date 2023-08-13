@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:khata_app/Provider/color_palete.dart';
 import 'package:khata_app/Provider/expenceprovider.dart' as expense;
 
 class RenderExpenseStatement extends StatefulWidget {
@@ -11,11 +8,15 @@ class RenderExpenseStatement extends StatefulWidget {
   const RenderExpenseStatement({required this.stm, super.key});
 
   @override
-  State<RenderExpenseStatement> createState() => _RenderExpenseStatementState();
+  State<RenderExpenseStatement> createState() =>
+      _RenderExpenseStatementState(stm: stm);
 }
 
 class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
   bool _expanded = false;
+  final expense.Expense stm;
+  _RenderExpenseStatementState({required this.stm});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,20 +48,28 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                           const SizedBox(
                             width: 5,
                           ),
-                          const Text(
-                            '200',
-                            style: TextStyle(fontSize: 20),
+                          Text(
+                            ' ${stm.amount}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   )),
               title: Text(
-                '1 Kg Apple',
-                style: Theme.of(context).textTheme.titleLarge,
+                stm.description,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onPrimaryContainer
+                        .withOpacity(.7)),
+                maxLines: 1,
               ),
               subtitle: Text(
-                '2074/3/4',
+                DateFormat.yMEd().format(stm.dateTime),
                 style: TextStyle(
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(.6),
@@ -72,9 +81,9 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
               trailing: IconButton(
                 icon: Icon(
                   _expanded
-                      ? Icons.keyboard_double_arrow_down_rounded
-                      : Icons.keyboard_double_arrow_right_rounded,
-                  size: 35,
+                      ? Icons.keyboard_arrow_down_rounded
+                      : Icons.keyboard_arrow_right_rounded,
+                  size: 45,
                 ),
                 onPressed: () => setState(
                   () {
@@ -122,14 +131,14 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                       height: 5,
                     ),
                     Text(
-                      'Purchased items:  ! kg tarkali , 2 kg onion , 1 pow mushroom',
+                      stm.description,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.surfaceTint),
                       overflow: TextOverflow.fade,
                     ),
                   ],
                 ),
-              )
+              ),
           ],
         ),
       ),

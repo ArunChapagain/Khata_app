@@ -60,7 +60,9 @@ class _LoadedStatementScreenState extends State<LoadedStatementScreen> {
                               )))
                       : ListView.builder(
                           itemBuilder: (ctx, index) {
-                            return const RenderLoadedStatement();
+                            return RenderLoadedStatement(
+                              fund: data[index],
+                            );
                           },
                           itemCount: data.length,
                         ),

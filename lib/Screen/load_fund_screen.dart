@@ -110,12 +110,13 @@ class LoadFundScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(255, 9, 1, 31),
-                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50, vertical: 13),
-                      elevation: 10,
-                      shadowColor: Theme.of(context).colorScheme.primary,
+                      // elevation: 10,
+                      shadowColor:
+                          Theme.of(context).colorScheme.secondaryContainer,
                     ),
                     // Method-2
                     // style: ButtonStyle(
@@ -135,7 +136,6 @@ class LoadFundScreen extends StatelessWidget {
                     // ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-
                       _saveForm(context);
                     },
                     child: Text(
@@ -157,6 +157,17 @@ class LoadFundScreen extends StatelessWidget {
     Provider.of<LoadedFundProvider>(context, listen: false)
         .addFund(_loadedFund);
     _formKey.currentState!.reset();
-    Navigator.of(context).pop();
+    final snackBar = SnackBar(
+      content: Center(
+          child: Text(
+        'Fund has been Loaded',
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(color: Theme.of(context).colorScheme.primaryContainer),
+      )),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // Navigator.of(context).pop();
   }
 }

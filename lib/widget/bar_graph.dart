@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:fl_chart/fl_chart.dart';
 
 class BarChartSample2 extends StatefulWidget {
@@ -27,8 +26,6 @@ class BarChartSample2State extends State<BarChartSample2> {
     final barGroup3 = makeGroupData(2, 18, 5);
     final barGroup4 = makeGroupData(3, 20, 16);
     final barGroup5 = makeGroupData(4, 17, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
-    final barGroup7 = makeGroupData(6, 10, 1.5);
 
     final items = [
       barGroup1,
@@ -36,8 +33,6 @@ class BarChartSample2State extends State<BarChartSample2> {
       barGroup3,
       barGroup4,
       barGroup5,
-      barGroup6,
-      barGroup7,
     ];
 
     rawBarGroups = items;
@@ -74,7 +69,8 @@ class BarChartSample2State extends State<BarChartSample2> {
                         ),
                         const Text('Loaded VS',
                             style: TextStyle(
-                                color: Color(0xff77839a), fontSize: 16)),
+                                color: Color.fromARGB(255, 123, 141, 173),
+                                fontSize: 16)),
                         const SizedBox(
                           width: 4,
                         ),
@@ -193,29 +189,33 @@ class BarChartSample2State extends State<BarChartSample2> {
     );
     String text;
     if (value == 0) {
-      text = '1K';
+      text = '0';
+    } else if (value == 5) {
+      text = '500';
     } else if (value == 10) {
-      text = '5K';
-    } else if (value == 19) {
-      text = '10K';
+      text = '1000';
+    } else if (value == 15) {
+      text = '1.5K';
+    } else if (value == 20) {
+      text = '2K';
     } else {
       return Container();
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 0,
+      space: 8,
       child: Text(text, style: style),
     );
   }
 
   Widget bottomTitles(double value, TitleMeta meta) {
-    final titles = <String>['Mn', 'Te', 'Wd', 'Tu', 'Fr', 'St', 'Su'];
+    final titles = <String>['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 
     final Widget text = Text(
       titles[value.toInt()],
-      style: const TextStyle(
-        color: Color(0xff7589a2),
-        fontWeight: FontWeight.bold,
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.surfaceTint.withOpacity(.9),
+        fontWeight: FontWeight.w500,
         fontSize: 14,
       ),
     );
@@ -255,7 +255,8 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: Theme.of(context).colorScheme.surfaceTint.withOpacity(0.4),
+          // color: Colors.white.withOpacity(0.4),
         ),
         const SizedBox(
           width: space,
@@ -263,7 +264,9 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.surfaceTint.withOpacity(0.8),
+
+          // color: Colors.white.withOpacity(0.8),
         ),
         const SizedBox(
           width: space,
@@ -271,7 +274,9 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 42,
-          color: Colors.white.withOpacity(1),
+          color: Theme.of(context).colorScheme.surfaceTint.withOpacity(1),
+
+          // color: Colors.white.withOpacity(1),
         ),
         const SizedBox(
           width: space,
@@ -279,7 +284,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: Theme.of(context).colorScheme.surfaceTint.withOpacity(0.8),
         ),
         const SizedBox(
           width: space,
@@ -287,7 +292,7 @@ class BarChartSample2State extends State<BarChartSample2> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: Theme.of(context).colorScheme.surfaceTint.withOpacity(0.4),
         ),
       ],
     );
