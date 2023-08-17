@@ -6,12 +6,13 @@ import 'package:khata_app/widget/bar_graph.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = 'home';
-  const HomeScreen({super.key});
-  // final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  const HomeScreen({required this.scaffoldkey,super.key});
+  final GlobalKey<ScaffoldState> scaffoldkey;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldkey,
       body: Container(
         color: Theme.of(context).colorScheme.surface,
         child: Column(

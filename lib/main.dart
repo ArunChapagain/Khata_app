@@ -21,13 +21,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ThemeMode themeMode = ThemeMode.system;
   int index = 0;
   List screen = [];
   @override
   void didChangeDependencies() {
     screen = [
-      const HomeScreen(),
+      HomeScreen(
+        scaffoldkey: scaffoldKey,
+      ),
       const LoadedStatementScreen(),
       const ExpenseStatementScreen()
     ];
@@ -115,6 +118,7 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
             brightness: Brightness.dark),
         home: Scaffold(
+          // key: ,
           appBar: AppBar(
             title: const Text('Khata App'),
             actions: [
@@ -174,9 +178,11 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         routes: {
-          HomeScreen.routeName: (ctx) => const HomeScreen(),
+          HomeScreen.routeName: (ctx) => HomeScreen(
+                scaffoldkey: scaffoldKey,
+              ),
           LoadFundScreen.routeName: (ctx) => LoadFundScreen(),
-          AddExpenseScreen.routeName: (ctx) =>  AddExpenseScreen(),
+          AddExpenseScreen.routeName: (ctx) => AddExpenseScreen(),
         },
 
         //  HomeScreen(

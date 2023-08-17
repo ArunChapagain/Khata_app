@@ -70,14 +70,17 @@ class BarChartSample2State extends State<BarChartSample2> {
                         const Text('Loaded VS',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 123, 141, 173),
-                                fontSize: 16)),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700)),
                         const SizedBox(
                           width: 4,
                         ),
                         const Text(
                           'Expenditure',
-                          style:
-                              TextStyle(color: Color(0xff77839a), fontSize: 16),
+                          style: TextStyle(
+                              color: Color(0xff77839a),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -85,88 +88,92 @@ class BarChartSample2State extends State<BarChartSample2> {
                       height: 38,
                     ),
                     Expanded(
-                      child: BarChart(
-                        BarChartData(
-                          maxY: 20,
-                          barTouchData: BarTouchData(
-                            touchTooltipData: BarTouchTooltipData(
-                              tooltipBgColor: Colors.grey,
-                              getTooltipItem: (a, b, c, d) => null,
-                            ),
-                            touchCallback: (FlTouchEvent event, response) {
-                              if (response == null || response.spot == null) {
-                                setState(() {
-                                  touchedGroupIndex = -1;
-                                  showingBarGroups = List.of(rawBarGroups);
-                                });
-                                return;
-                              }
-
-                              touchedGroupIndex =
-                                  response.spot!.touchedBarGroupIndex;
-
-                              setState(() {
-                                if (!event.isInterestedForInteractions) {
-                                  touchedGroupIndex = -1;
-                                  showingBarGroups = List.of(rawBarGroups);
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: BarChart(
+                          BarChartData(
+                            maxY: 20,
+                            barTouchData: BarTouchData(
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipBgColor: Colors.grey,
+                                getTooltipItem: (a, b, c, d) => null,
+                              ),
+                              touchCallback: (FlTouchEvent event, response) {
+                                if (response == null || response.spot == null) {
+                                  setState(() {
+                                    touchedGroupIndex = -1;
+                                    showingBarGroups = List.of(rawBarGroups);
+                                  });
                                   return;
                                 }
-                                showingBarGroups = List.of(rawBarGroups);
-                                if (touchedGroupIndex != -1) {
-                                  var sum = 0.0;
-                                  for (final rod
-                                      in showingBarGroups[touchedGroupIndex]
-                                          .barRods) {
-                                    sum += rod.toY;
-                                  }
-                                  final avg = sum /
-                                      showingBarGroups[touchedGroupIndex]
-                                          .barRods
-                                          .length;
 
-                                  showingBarGroups[touchedGroupIndex] =
-                                      showingBarGroups[touchedGroupIndex]
-                                          .copyWith(
-                                    barRods: showingBarGroups[touchedGroupIndex]
-                                        .barRods
-                                        .map((rod) {
-                                      return rod.copyWith(
-                                          toY: avg, color: widget.avgColor);
-                                    }).toList(),
-                                  );
-                                }
-                              });
-                            },
-                          ),
-                          titlesData: FlTitlesData(
-                            show: true,
-                            rightTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
+                                touchedGroupIndex =
+                                    response.spot!.touchedBarGroupIndex;
+
+                                setState(() {
+                                  if (!event.isInterestedForInteractions) {
+                                    touchedGroupIndex = -1;
+                                    showingBarGroups = List.of(rawBarGroups);
+                                    return;
+                                  }
+                                  showingBarGroups = List.of(rawBarGroups);
+                                  if (touchedGroupIndex != -1) {
+                                    var sum = 0.0;
+                                    for (final rod
+                                        in showingBarGroups[touchedGroupIndex]
+                                            .barRods) {
+                                      sum += rod.toY;
+                                    }
+                                    final avg = sum /
+                                        showingBarGroups[touchedGroupIndex]
+                                            .barRods
+                                            .length;
+
+                                    showingBarGroups[touchedGroupIndex] =
+                                        showingBarGroups[touchedGroupIndex]
+                                            .copyWith(
+                                      barRods:
+                                          showingBarGroups[touchedGroupIndex]
+                                              .barRods
+                                              .map((rod) {
+                                        return rod.copyWith(
+                                            toY: avg, color: widget.avgColor);
+                                      }).toList(),
+                                    );
+                                  }
+                                });
+                              },
                             ),
-                            topTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                getTitlesWidget: bottomTitles,
-                                reservedSize: 42,
+                            titlesData: FlTitlesData(
+                              show: true,
+                              rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              topTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: bottomTitles,
+                                  reservedSize: 42,
+                                ),
+                              ),
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 28,
+                                  interval: 1,
+                                  getTitlesWidget: leftTitles,
+                                ),
                               ),
                             ),
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 28,
-                                interval: 1,
-                                getTitlesWidget: leftTitles,
-                              ),
+                            borderData: FlBorderData(
+                              show: false,
                             ),
+                            barGroups: showingBarGroups,
+                            gridData: const FlGridData(show: false),
                           ),
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          barGroups: showingBarGroups,
-                          gridData: const FlGridData(show: false),
                         ),
                       ),
                     ),
@@ -184,18 +191,14 @@ class BarChartSample2State extends State<BarChartSample2> {
   Widget leftTitles(double value, TitleMeta meta) {
     const style = TextStyle(
       color: Color(0xff7589a2),
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w500,
       fontSize: 14,
     );
     String text;
     if (value == 0) {
       text = '0';
-    } else if (value == 5) {
-      text = '500';
     } else if (value == 10) {
-      text = '1000';
-    } else if (value == 15) {
-      text = '1.5K';
+      text = '1k';
     } else if (value == 20) {
       text = '2K';
     } else {
@@ -203,7 +206,7 @@ class BarChartSample2State extends State<BarChartSample2> {
     }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 8,
+      space: 0,
       child: Text(text, style: style),
     );
   }
@@ -214,7 +217,7 @@ class BarChartSample2State extends State<BarChartSample2> {
     final Widget text = Text(
       titles[value.toInt()],
       style: TextStyle(
-        color: Theme.of(context).colorScheme.surfaceTint.withOpacity(.9),
+        color: Theme.of(context).colorScheme.surfaceTint.withOpacity(.85),
         fontWeight: FontWeight.w500,
         fontSize: 14,
       ),
