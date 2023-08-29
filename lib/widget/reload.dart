@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ReloadListTile extends StatefulWidget {
   final Function() onPressed;
 
-  ReloadListTile({required this.onPressed});
+  const ReloadListTile({super.key, required this.onPressed});
 
   @override
   _ReloadListTileState createState() => _ReloadListTileState();

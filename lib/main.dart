@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:khata_app/Provider/expenceprovider.dart';
-import 'package:khata_app/Provider/load_fund_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:khata_app/Screen/add_expense_screen.dart';
 import 'package:khata_app/Screen/expense_screen.dart';
 import 'package:khata_app/Screen/home_screen.dart';
 import 'package:khata_app/Screen/load_fund_screen.dart';
 import 'package:khata_app/Screen/loaded_statement_screen.dart';
 import 'package:khata_app/widget/theme_mode.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -88,107 +86,93 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => LoadedFundProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => ExpenseProvider(),
-        )
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Khata',
-        themeMode: themeMode,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Khata',
+      themeMode: themeMode,
 
-        // theme: ThemeData(
-        //     colorSchemeSeed: const Color(0xff6750a4),
-        //     useMaterial3: true,
-        //     brightness: Brightness.light),
+      // theme: ThemeData(
+      //     colorSchemeSeed: const Color(0xff6750a4),
+      //     useMaterial3: true,
+      //     brightness: Brightness.light),
 
-        theme: lightTheme.copyWith(
-          useMaterial3: true,
-          brightness: Brightness.light,
-          // scaffoldBackgroundColor: lightTheme.secondaryHeaderColor,
-        ),
-
-        darkTheme: ThemeData(
-            colorSchemeSeed: const Color(0xff6750a4),
-            useMaterial3: true,
-            brightness: Brightness.dark),
-        home: Scaffold(
-          // key: ,
-          appBar: AppBar(
-            title: const Text('Khata App'),
-            actions: [
-              BrightnessButton(handleBrightnessChange: handleBrightnessChange),
-              IconButton(
-                onPressed: () {
-                  handelingBottomBox();
-                },
-                icon: const Icon(Icons.more_vert),
-              )
-            ],
-          ),
-          body: screen[index],
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: index,
-            onDestinationSelected: (index) {
-              setState(() {
-                this.index = index;
-              });
-            },
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(
-                  Icons.home_outlined,
-                  size: 30,
-                ),
-                label: 'Home',
-                selectedIcon: Icon(
-                  Icons.home,
-                  size: 35,
-                ),
-              ),
-              NavigationDestination(
-                icon: Icon(
-                  Icons.receipt_long_outlined,
-                  size: 30,
-                ),
-                label: 'Loaded',
-                selectedIcon: Icon(
-                  Icons.receipt_long,
-                  size: 35,
-                ),
-              ),
-              NavigationDestination(
-                icon: Icon(
-                  Icons.calendar_month_outlined,
-                  size: 30,
-                ),
-                label: 'Expense',
-                selectedIcon: Icon(
-                  Icons.calendar_month_sharp,
-                  size: 35,
-                ),
-              ),
-            ],
-            // selectedIndex:get,
-          ),
-        ),
-        routes: {
-          HomeScreen.routeName: (ctx) => HomeScreen(
-                scaffoldkey: scaffoldKey,
-              ),
-          LoadFundScreen.routeName: (ctx) => LoadFundScreen(),
-          AddExpenseScreen.routeName: (ctx) => AddExpenseScreen(),
-        },
-
-        //  HomeScreen(
-        //   handleBrightnessChange: handleBrightnessChange,
-        // ),
+      theme: lightTheme.copyWith(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        // scaffoldBackgroundColor: lightTheme.secondaryHeaderColor,
       ),
+
+      darkTheme: ThemeData(
+          colorSchemeSeed: const Color(0xff6750a4),
+          useMaterial3: true,
+          brightness: Brightness.dark),
+      home: Scaffold(
+        // key: ,
+        appBar: AppBar(
+          title: const Text('Khata App'),
+          actions: [
+            BrightnessButton(handleBrightnessChange: handleBrightnessChange),
+            IconButton(
+              onPressed: () {
+                handelingBottomBox();
+              },
+              icon: const Icon(Icons.more_vert),
+            )
+          ],
+        ),
+        body: screen[index],
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: index,
+          onDestinationSelected: (index) {
+            setState(() {
+              this.index = index;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(
+                Icons.home_outlined,
+                size: 30,
+              ),
+              label: 'Home',
+              selectedIcon: Icon(
+                Icons.home,
+                size: 35,
+              ),
+            ),
+            NavigationDestination(
+              icon: Icon(
+                Icons.receipt_long_outlined,
+                size: 30,
+              ),
+              label: 'Loaded',
+              selectedIcon: Icon(
+                Icons.receipt_long,
+                size: 35,
+              ),
+            ),
+            NavigationDestination(
+              icon: Icon(
+                Icons.calendar_month_outlined,
+                size: 30,
+              ),
+              label: 'Expense',
+              selectedIcon: Icon(
+                Icons.calendar_month_sharp,
+                size: 35,
+              ),
+            ),
+          ],
+          // selectedIndex:get,
+        ),
+      ),
+      routes: {
+        HomeScreen.routeName: (ctx) => HomeScreen(
+              scaffoldkey: scaffoldKey,
+            ),
+        LoadFundScreen.routeName: (ctx) => const LoadFundScreen(),
+        AddExpenseScreen.routeName: (ctx) => AddExpenseScreen(),
+      },
     );
   }
 }

@@ -1,28 +1,54 @@
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:khata_app/models/loadfund.dart';
+import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite/sqlite_api.dart';
 
-class LoadedFund {
-  final String id;
-  final String uid;
-  final double amount;
-  late DateTime dateTime;
-
-  LoadedFund(
-      {required this.id,
-      required this.uid,
-      required this.amount,
-      required this.dateTime});
+Future<Database> _getDatabase() async {
+  final dbPath = await sql.getDatabasesPath();
+  final db = await sql.openDatabase(path.join(dbPath, 'khata.db'),
+      onCreate: (db, version) {
+    return db.execute(
+        'CREATE TABLE loaded_fund (id TEXT PRIMARY KEY, uid TEXT, amount REAL,dateTime TEXT); CREATE TABLE expenses (id TEXT PRIMARY KEY, uid TEXT,desc Text ,amount REAL,dateTime TEXT);');
+    //   return db.execute(
+    //       'CREATE TABLE loaded_fund (id TEXT PRIMARY KEY, uid TEXT, amount REAL,dateTime TEXT);');
+  }, version: 1);
+  return db;
 }
 
-class LoadedFundProvider with ChangeNotifier {
-  final List<LoadedFund> _statement = [];
+class LoadedFundNotifier extends StateNotifier<List<LoadedFund>> {
+  LoadedFundNotifier() : super(const []);
 
-  List<LoadedFund> get getloadedStatement {
-    return [..._statement];
+  Future<void> addFund(LoadedFund fund) async {
+    final db = await _getDatabase();
+    db.insert('loaded_fund', {
+      'id': fund.id,
+      'uid': fund.uid,
+      'amount': fund.amount,
+      'dateTime': DateTime.now().toIso8601String(),
+    });
   }
 
-  void addFund(LoadedFund fund) {
-    _statement.insert(0, fund);
-    notifyListeners();
+  Future<void> loadFunds() async {
+    final db = await _getDatabase();
+    final data = await db.query('loaded_fund');
+    final fund = data.map((row) {
+      return LoadedFund(
+          id: row['id'] as String,
+          uid: row['uid'] as String,
+          amount: row['amount'] as double,
+          dateTime: DateTime.parse(row['dateTime'] as String));
+    }).toList();
+    state = fund;
   }
 }
+
+final loadedFundProvider =
+    StateNotifierProvider<LoadedFundNotifier, List<LoadedFund>>(
+        (ref) => LoadedFundNotifier());
+
+
+
+
+
+// clas

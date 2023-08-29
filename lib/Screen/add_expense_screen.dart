@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:khata_app/Provider/expenceprovider.dart';
-import 'package:provider/provider.dart';
+import 'package:khata_app/models/expense.dart';
 
-class AddExpenseScreen extends StatelessWidget {
+class AddExpenseScreen extends ConsumerWidget {
   static const routeName = 'add-expense';
   AddExpenseScreen({super.key});
 
-
-
   final _formKey = GlobalKey<FormState>();
 
+  var expense = Expense(uid: 'arun', amount: 0, description: '');
 
-
-
-  var expense = Expense(
-      id: null.toString(),
-      uid: null.toString(),
-      amount: 0,
-      dateTime: DateTime.now(),
-      description: '');
-
-  void _saveForm(BuildContext ctx) {
+  void _saveForm(BuildContext ctx, WidgetRef r) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Provider.of<ExpenseProvider>(ctx, listen: false).addExpence(expense);
+      await r.read(expenseProvider.notifier).addExpense(expense);
       _formKey.currentState!.reset();
       final snackBar = SnackBar(
+        behavior: SnackBarBehavior.floating,
         content: Center(
           child: Text(
             'Expense has been Added',
@@ -36,13 +28,12 @@ class AddExpenseScreen extends StatelessWidget {
           ),
         ),
       );
-      FocusScope.of(ctx).unfocus();
       ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -96,16 +87,14 @@ class AddExpenseScreen extends StatelessWidget {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .primary
-                                      .withOpacity(.7),
-                                  decorationThickness: 30,
+                                      .withOpacity(.7), //causes the problem
                                   fontWeight: FontWeight.w500,
                                   fontSize: 25,
                                   // overflow: TextOverflow.visible,
                                   height: 1),
                               onSaved: (value) {
                                 expense = Expense(
-                                    id: null.toString(),
-                                    uid: null.toString(),
+                                    uid: expense.uid,
                                     amount: expense.amount,
                                     dateTime: expense.dateTime,
                                     description: value!);
@@ -144,11 +133,11 @@ class AddExpenseScreen extends StatelessWidget {
                                 }
                               },
                               onSaved: (value) {
+                                FocusScope.of(context).unfocus();
+
                                 expense = Expense(
-                                    id: null.toString(),
-                                    uid: null.toString(),
+                                    uid: expense.uid,
                                     amount: double.parse(value!),
-                                    dateTime: DateTime.now(),
                                     description: expense.description);
                               },
                               magnifierConfiguration:
@@ -209,7 +198,7 @@ class AddExpenseScreen extends StatelessWidget {
                             Theme.of(context).colorScheme.secondaryContainer,
                         elevation: 8),
                     onPressed: () {
-                      _saveForm(context);
+                      _saveForm(context, ref);
                     },
                     child: Text(
                       'Save Expense',

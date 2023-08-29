@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:khata_app/Provider/load_fund_provider.dart';
+import 'package:khata_app/models/loadfund.dart';
 
 class RenderLoadedStatement extends StatelessWidget {
- const RenderLoadedStatement({required this.fund, super.key});
-final  LoadedFund fund;
+  const RenderLoadedStatement({required this.fund, super.key});
+  final LoadedFund fund;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,8 @@ final  LoadedFund fund;
               leading: CircleAvatar(
                   maxRadius: 50,
                   child: FittedBox(
+                    alignment: Alignment.center,
+                    fit: BoxFit.contain,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -37,7 +40,7 @@ final  LoadedFund fund;
                           ),
                           Text(
                             fund.amount.toString(),
-                            style:const TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
@@ -48,7 +51,7 @@ final  LoadedFund fund;
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               subtitle: Text(
-                DateFormat.MMMMEEEEd().format(fund.dateTime),
+                DateFormat.MMMMEEEEd().format(fund.dateTime!),
                 style: TextStyle(
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(.6),

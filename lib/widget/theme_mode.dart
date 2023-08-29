@@ -4,6 +4,7 @@ class BrightnessButton extends StatelessWidget {
   const BrightnessButton({
     required this.handleBrightnessChange,
     this.showTooltipBelow = true,
+    super.key
   });
 
   final Function handleBrightnessChange;

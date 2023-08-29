@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:khata_app/Provider/expenceprovider.dart' as expense;
+import 'package:khata_app/models/expense.dart';
 
 class RenderExpenseStatement extends StatefulWidget {
-  final expense.Expense stm;
-
-  const RenderExpenseStatement({required this.stm, super.key});
+  Expense expense;
+   RenderExpenseStatement({super.key,required this.expense});
 
   @override
-  State<RenderExpenseStatement> createState() =>
-      _RenderExpenseStatementState(stm: stm);
+  State<RenderExpenseStatement> createState() => _RenderExpenseStatementState();
 }
 
 class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
   bool _expanded = false;
-  final expense.Expense stm;
-  _RenderExpenseStatementState({required this.stm});
+  _RenderExpenseStatementState();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +46,7 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                             width: 5,
                           ),
                           Text(
-                            ' ${stm.amount}',
+                            ' ${widget.expense.amount}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -60,7 +57,7 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                     ),
                   )),
               title: Text(
-                stm.description,
+                widget.expense.description,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Theme.of(context)
                         .colorScheme
@@ -69,7 +66,7 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                 maxLines: 1,
               ),
               subtitle: Text(
-                DateFormat.yMEd().format(stm.dateTime),
+                DateFormat.yMEd().format(widget.expense.dateTime!),
                 style: TextStyle(
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(.6),
@@ -131,7 +128,7 @@ class _RenderExpenseStatementState extends State<RenderExpenseStatement> {
                       height: 5,
                     ),
                     Text(
-                      stm.description,
+                      widget.expense.description,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.surfaceTint),
                       overflow: TextOverflow.fade,
