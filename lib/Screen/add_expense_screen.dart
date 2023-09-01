@@ -12,22 +12,27 @@ class AddExpenseScreen extends ConsumerWidget {
   var expense = Expense(uid: 'arun', amount: 0, description: '');
 
   void _saveForm(BuildContext ctx, WidgetRef r) async {
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: Center(
+        child: Text(
+          'Fund has been Added',
+          style: Theme.of(ctx)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: Theme.of(ctx).colorScheme.primaryContainer),
+        ),
+      ),
+    );
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       await r.read(expenseProvider.notifier).addExpense(expense);
       _formKey.currentState!.reset();
-      final snackBar = SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Center(
-          child: Text(
-            'Expense has been Added',
-            style: Theme.of(ctx)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Theme.of(ctx).colorScheme.primaryContainer),
-          ),
-        ),
-      );
+      // final snackBar = SnackBarWidget(
+      //   message: 'Exxpense has been added',
+      // );
+      if (!ctx.mounted) return;
       ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
     }
   }

@@ -19,6 +19,8 @@ Future<Database> _getDatabase() async {
 class LoadedFundNotifier extends StateNotifier<List<LoadedFund>> {
   LoadedFundNotifier() : super(const []);
 
+  double totalLoaded = 0;
+
   Future<void> addFund(LoadedFund fund) async {
     final db = await _getDatabase();
     db.insert('loaded_fund', {
@@ -27,6 +29,7 @@ class LoadedFundNotifier extends StateNotifier<List<LoadedFund>> {
       'amount': fund.amount,
       'dateTime': DateTime.now().toIso8601String(),
     });
+    totalLoadedFund();
   }
 
   Future<void> loadFunds() async {
@@ -40,6 +43,16 @@ class LoadedFundNotifier extends StateNotifier<List<LoadedFund>> {
           dateTime: DateTime.parse(row['dateTime'] as String));
     }).toList();
     state = fund;
+  }
+
+  void totalLoadedFund() {
+    for (LoadedFund fund in state) {
+      totalLoaded = totalLoaded + fund.amount;
+    }
+  }
+
+  double get getLoadedamount {
+    return totalLoaded;
   }
 }
 

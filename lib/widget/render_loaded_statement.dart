@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:khata_app/Provider/load_fund_provider.dart';
 import 'package:khata_app/models/loadfund.dart';
 
 class RenderLoadedStatement extends StatelessWidget {
