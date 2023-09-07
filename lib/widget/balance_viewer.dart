@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:khata_app/Provider/load_fund_provider.dart';
+import 'package:khata_app/models/current_balance.dart';
 import 'package:khata_app/widget/reload.dart';
 
 class BalanceViewer extends ConsumerStatefulWidget {
@@ -11,16 +11,10 @@ class BalanceViewer extends ConsumerStatefulWidget {
 }
 
 class _BalanceViewerState extends ConsumerState<BalanceViewer> {
-  double expense = 1;
+  final balance = CurrentBalance.balanceAmount;
+
   @override
-  void initState() {
-    ref.read(loadedFundProvider.notifier).totalLoadedFund();
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
-    final loaded = ref.read(loadedFundProvider.notifier).getLoadedamount;
-
     // double loaded =
     //     Provider.of<LoadedFundProvider>(context, listen: false).totalLoaded;
     return Card(
@@ -33,7 +27,7 @@ class _BalanceViewerState extends ConsumerState<BalanceViewer> {
             size: 30,
           ),
           title: Text(
-            'NPR ${loaded}',
+            'NPR $balance',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           subtitle: const Text('Balance'),

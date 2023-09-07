@@ -14,7 +14,7 @@ class ExpenseStatementScreen extends ConsumerStatefulWidget {
 
 class _ExpenseStatementScreenState
     extends ConsumerState<ExpenseStatementScreen> {
-  late var expenseFuture;
+  late Future<void> expenseFuture;
 
   @override
   void initState() {
@@ -24,8 +24,8 @@ class _ExpenseStatementScreenState
 
   @override
   Widget build(BuildContext context) {
-    final data = ref.read(expenseProvider);
-    print(data.length);
+    final data = ref.watch(expenseProvider);
+
 
     return Scaffold(
       body: Column(
@@ -40,7 +40,7 @@ class _ExpenseStatementScreenState
               future: expenseFuture,
               builder: (context, snapshot) =>
                   snapshot.connectionState == ConnectionState.waiting
-                      ? const CircularProgressIndicator()
+                      ? const Center(child: CircularProgressIndicator())
                       : ListView.builder(
                           itemBuilder: (ctx, index) {
                             return RenderExpenseStatement(

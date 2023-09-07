@@ -15,7 +15,6 @@ class LoadedStatementScreen extends ConsumerStatefulWidget {
 class _LoadedStatementScreenState extends ConsumerState<LoadedStatementScreen> {
   late Future<void> _fundFuture;
 
-  late List data;
 
   @override
   void initState() {

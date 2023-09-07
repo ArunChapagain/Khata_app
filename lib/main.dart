@@ -5,6 +5,7 @@ import 'package:khata_app/Screen/expense_screen.dart';
 import 'package:khata_app/Screen/home_screen.dart';
 import 'package:khata_app/Screen/load_fund_screen.dart';
 import 'package:khata_app/Screen/loaded_statement_screen.dart';
+import 'package:khata_app/models/current_balance.dart';
 import 'package:khata_app/widget/theme_mode.dart';
 
 void main() {
@@ -24,11 +25,15 @@ class _MyAppState extends State<MyApp> {
   int index = 0;
   List screen = [];
   @override
+  void initState() {
+    CurrentBalance.loadFromDevice();
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     screen = [
-      HomeScreen(
-        scaffoldkey: scaffoldKey,
-      ),
+      const HomeScreen(),
       const LoadedStatementScreen(),
       const ExpenseStatementScreen()
     ];
@@ -38,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   void handelingBottomBox() async {
     await showModalBottomSheet(
       showDragHandle: true,
-      context: context,
+      context: scaffoldKey.currentContext!,
       constraints: const BoxConstraints(maxWidth: 640),
       builder: (context) {
         return SizedBox(
@@ -47,7 +52,7 @@ class _MyAppState extends State<MyApp> {
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: ListView(
               shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               children: const [
                 Icon(Icons.access_time_outlined),
                 Icon(Icons.access_time_outlined),
@@ -107,7 +112,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
           brightness: Brightness.dark),
       home: Scaffold(
-        // key: ,
+        key: scaffoldKey,
         appBar: AppBar(
           title: const Text('Khata App'),
           actions: [
@@ -167,9 +172,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       routes: {
-        HomeScreen.routeName: (ctx) => HomeScreen(
-              scaffoldkey: scaffoldKey,
-            ),
+        HomeScreen.routeName: (ctx) => const HomeScreen(),
         LoadFundScreen.routeName: (ctx) => const LoadFundScreen(),
         AddExpenseScreen.routeName: (ctx) => AddExpenseScreen(),
       },
